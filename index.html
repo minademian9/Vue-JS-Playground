@@ -1,10 +1,25 @@
 <html>
    <head>
-      <title>VueJs Instance</title>
+      <title>VueJs Playground</title>
       <script type = "text/javascript" src = "https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+      <script type = "text/javascript" src = " https://unpkg.com/vue-router/dist/vue-router.js"></script>
+      <link href = "https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel = "stylesheet" type = "text/css">
    </head>
    <body>
 
+      <div id = "app">
+         <h1>Routing Example</h1>
+         <p>
+            <router-link to = "/route1">Router Link 1</router-link>
+            <router-link to = "/route2">Router Link 2</router-link>
+            <!-- router link with query string. -->
+            <router-link v-bind:to ="{path:'/route1', query: { name: 'Tery' }}">Router Link 1.5</router-link> 
+         </p>
+         <!-- route outlet -->
+         <!-- component matched by the route will render here -->
+         <router-view></router-view>
+      </div>
+      
       <div id = "vue_det">
          <h1>Firstname : {{firstname}}</h1>
          <h1>Lastname : {{lastname}}</h1>
@@ -28,9 +43,162 @@
          <h1>Using computed method : {{getfullname}}</h1>
       </div>
       
+      <div id = "computed_props_2">
+         <input type = "text" v-model = "fullname" />
+         <h1>{{firstName}}</h1>
+         <h1>{{lastName}}</h1>
+      </div>
       
+      <div id = "computed_props_3">
+         Kilometers : <input type = "text" v-model = "kilometers">
+         Meters : <input type = "text" v-model = "meters">
+      </div>
+
+      <div id = "classbinding">
+         <div class = "info"  v-bind:class = "{ active: isActive, 'displayError': hasError }">
+            {{title}}
+         </div>
+      </div>
+
+      <div id = "classbinding_2">
+         <div v-bind:class = "[infoclass, errorclass]">{{title}}</div>
+         <div v-bind:class = "[isActive ? infoclass : '', haserror ? errorclass : '']">{{title2}}</div>
+         <new_component class = "active"></new_component>
+         <div v-bind:style = "{ color: activeColor, fontSize: fontSize + 'px' }">{{title3}}</div>
+      </div>
+
+      <div id = "databinding">
+         <h3>TEXTBOX</h3>
+         <input  v-model = "name" placeholder = "Enter Name" />
+         <h3>Name entered is : {{name}}</h3>
+         <hr/>
+         <h3>Textarea</h3>
+         <textarea v-model = "textmessage" placeholder = "Add Details"></textarea>
+         <h1><p>{{textmessage}}</p></h1>
+         <hr/>
+         <h3>Checkbox</h3>
+         <input type = "checkbox" id = "checkbox" v-model = "checked"> {{checked}}
+
+         <h3>Radio</h3>
+         <input type = "radio" id = "black" value = "Black" v-model = "picked">Black
+         <input type = "radio" id = "white" value = "White" v-model = "picked">White
+         <h3>Radio element clicked : {{picked}} </h3>
+         <hr/>
+         <h3>Select</h3>
+         <select v-model = "languages">
+            <option disabled value = "">Please select one</option>
+            <option>Java</option>
+            <option>Javascript</option>
+            <option>Php</option>
+            <option>C</option>
+            <option>C++</option>
+         </select>
+         <h3>Languages Selected is : {{ languages }}</h3>
+         <hr/>
+
+         <span style = "font-size:25px;">Enter Age:</span> <input v-model.number = "age" type = "number">
+         <br/>
+         <span style = "font-size:25px;">Enter Message:</span> <input v-model.lazy = "msg">
+         <h3>Display Message : {{msg}}</h3>
+         <br/>
+         <span style = "font-size:25px;">Enter Message : </span><input v-model.trim = "message">
+         <h3>Display Message : {{message}}</h3>
+
+         <input type = "text" v-on:keyup.enter = "showinputvalue" v-bind:style = "styleobj" placeholder = "Enter your name"/>
+         <h3> {{name_2}}</h3>
+
+      </div>
+
+
+      <div id = "databinding_2">
+         <div id = "counter-event-example">
+            <p style = "font-size:25px;">Language displayed : <b>{{ languageclicked }}</b></p>
+            <button-counter
+            v-for = "(item, index) in languages"
+            v-bind:item = "item"
+            v-bind:index = "index"
+            v-on:showlanguage = "languagedisp"></button-counter>
+         </div>
+      </div>
+
+      <div id = "databinding_3">
+         <button v-on:click = "showdata" v-bind:style = "styleobj">Click Me</button>
+         <span style = "font-size:25px;"><b>{{show}}</b></span>
+         <h1 v-if = "show">This is h1 tag</h1>
+         <h2 v-else>This is h2 tag</h2>
+
+         <div v-show = "show">
+            <b>V-Show: this is still in DOM but hidden</b>
+         </div>
+
+         <input type = "text" v-on:keyup.enter = "showinputvalue"
+            v-bind:style = "styleobj" placeholder = "Enter Fruits Names"/>
+
+         <h1 v-if = "items.length>0">Display Fruits Name</h1>
+         <ul>
+            <li v-for = "(a, index) in items">{{index}}--{{a}}</li>
+         </ul>
+
+         <button v-on:click = "show = !show">Click Me</button>
+         <transition name = "fade">
+            <p v-show = "show" v-bind:style = "styleobj">Animation Example</p>
+         </transition>
+
+      </div>
+
+
+      <div id = "animate" style = "text-align:center">
+         <button @click = "show = !show"><span style = "font-size:25px;">Animate</span></button>
+         <transition
+            name = "custom-classes-transition"
+            enter-active-class = "animated swing"
+            leave-active-class = "animated bounceIn">
+            <p v-if = "show"><span style = "font-size:25px;">Example</span></p>
+         </transition>
+      </div>
+
+      <div id = "databinding_4">
+         <div v-changestyle = "{color:'green'}">VueJS Directive</div>
+         <input  v-model = "name" placeholder = "Enter Name" /><br/>
+         <span style = "font-size:25px;"><b>Letter count is : {{name | countletters}}</b></span>
+      
+      </div>
+
+
+     
+
       <script type = "text/javascript" src = "js/vue_computeprops.js"></script>
       <script type = "text/javascript" src = "js/vue_component.js"></script>
       <script type = "text/javascript" src = "js/vue_template.js"></script>
+      <script type = "text/javascript" src = "js/vue_directives.js"></script>
+      <script type = "text/javascript" src = "js/vue_router.js"></script>
+
+      <style>
+         .info {
+            color: #00529B;
+            background-color: #BDE5F8;
+         }
+         div {
+            margin: 10px 0;
+            padding: 12px;
+         }
+         .active {
+            color: #4F8A10;
+            background-color: #DFF2BF;
+         }
+         .displayError{
+            color: #D8000C;
+            background-color: #FFBABA;
+         }
+
+            /* Used with the tag transition */
+            .fade-enter-active, .fade-leave-active {
+         transition: opacity 2s
+      }
+      .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+         opacity: 0
+      }
+      </style>
    </body>
+
 </html>
